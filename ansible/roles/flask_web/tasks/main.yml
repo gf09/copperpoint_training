@@ -1,0 +1,10 @@
+    - name: Install Python Flask Dependacy
+      pip:
+        name: ['flask', 'flask-mysql', 'cryptography']
+        state: present        
+        
+    - name: Copy source code
+      copy: src=~/ansible/app.py dest=/opt/app.py
+
+    - name: Start webserver
+      shell: FLASK_APP=/opt/app.py /usr/bin/nohup flask run --host=0.0.0.0 &

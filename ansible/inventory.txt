@@ -1,0 +1,7 @@
+target1 
+target2 
+target3 
+[db_and_web_servers]
+db_and_web_server1 
+db_and_web_server2 
+#ansible_host=172.17.0.6 ansible_user=root ansible_ssh_password=Passw0rd

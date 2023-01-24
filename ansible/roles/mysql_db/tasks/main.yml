@@ -1,0 +1,62 @@
+    - name: Install MySQL database
+      apt: 
+        name: [mysql-server, mysql-client]
+        state: present
+
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: /root/files
+        state: directory
+        mode: '0600'
+
+    - name: touch my.cnf
+      ansible.builtin.copy:
+        # path: /root/files/my.cnf
+        # state: touch
+        remote_src: true
+        src: /etc/mysql/my.cnf
+        dest: /root/files/my.cnf
+        owner: root
+        group: root
+        mode: '0600'
+    
+    - name: Copy my.cnf
+      ansible.builtin.copy:
+        # path: /root/.my.cnf
+        # state: touch
+        remote_src: true
+        src: /etc/mysql/my.cnf
+        dest: /root/.my.cnf
+        owner: root
+        group: root
+        mode: '0600'
+
+    # - name: Configure my.cnf      
+      # shell: "mkdir files && cp /etc/mysql/my.cnf ~/files/my.cnf"
+      # copy: src=/etc/mysql/my.cnf
+      #       dest=./files/my.cnf
+      #       owner=root
+      #       group=root
+      #       mode=0640
+
+    - name: Start MySQL Service
+      shell: "service mysql start"  
+      #  action: service name=mysql state=started
+      # service:
+      #   name: mysql
+      #   state: started
+      #   enabled: true
+      become: true
+
+    - name: Create Applicatoin Database
+      mysql_db: 
+        name: "{{ db_name }}"
+        state: present
+
+    - name: Cteate Database user
+      mysql_user: 
+        name: "{{ db_user }}"
+        password: "{{ db_password}}"
+        priv: '*.*:ALL'
+        state: present
+        host: '%'

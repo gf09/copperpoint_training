@@ -1,0 +1,23 @@
+# ansible-playbook playbook.yml -i inventory.txt
+- name: Update images
+  hosts: all
+  # strategy: free
+  serial: "20%"
+  # db_and_web_servers
+  become: true
+  tasks:
+    - name: Ansible apt update cache if it is older than 1 hour
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+- name: Deploy a web application
+  hosts: db_and_web_servers
+  strategy: free
+  #db_and_web_server1
+  #, db_and_web_server2
+  become: true
+  roles:
+    - python
+    - mysql_db
+    - flask_web
