@@ -1,8 +1,9 @@
-# ansible-playbook playbook.yml -i inventory.txt
+# ansible-playbook playbook.yml -i inventory.txt --ask-vault-pass
+# Passw0rd
 - name: Update images
   hosts: all
   # strategy: free
-  serial: "20%"
+  # serial: "20%"
   # db_and_web_servers
   become: true
   tasks:
